@@ -1,11 +1,11 @@
 dicom_AE/*
-!dicom/.gitkeep
+!dicom_AE/.gitkeep
 
 dicom_DLB/*
-!dicom/.gitkeep
+!dicom_DLB/.gitkeep
 
 dicom_HC/*
-!dicom/.gitkeep
+!dicom_HC/.gitkeep
 
 DLB/*
 HC/*
