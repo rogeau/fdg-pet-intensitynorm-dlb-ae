@@ -1,6 +1,6 @@
 # 🧠 Bq/mL -> SUV and Normalization pipeline
 
-This pipeline transforms step-by-step [18F]FDG PET dicom data expressed in Bq/mL to nifti files expressed in SUV. This is followed by spatial and intensity normalization using MATLAB and SPM.
+This pipeline converts [¹⁸F]FDG PET DICOM data (in Bq/mL) to NIfTI format expressed in Standardized Uptake Values (SUV), followed by spatial normalization and 3 different intensity normalization methods using MATLAB and SPM.
 
 ---
 
@@ -9,11 +9,11 @@ This pipeline transforms step-by-step [18F]FDG PET dicom data expressed in Bq/mL
 To run this pipeline, you’ll need the following:
 
 - **MATLAB**
-- **SPM12**, added to your MATLAB path
+- **SPM12** (added to your MATLAB path)
 - **dcm2niix** – for DICOM to NIfTI conversion
 - **Python** (via Anaconda/Miniconda recommended)
 
-It is recommended to create a dedicated environment using the provided `environment.yml` file:
+Python is required for the first step (DICOM to NIfTI and Unit conversions) and a dedicated conda environment can be created with the provided `environment.yml` file:
 
 ```bash
 conda env create -f environment.yml
@@ -22,15 +22,27 @@ conda activate pet-pipeline
 
 ---
 
-# Procedure
-Place your [¹⁸F]FDG DICOM folders inside the current directory. The script supports nested subfolders and processes only DICOM files. A summary of the conversion will be output to an Excel file.
+# 🛠️ Processing Pipeline
+**1. Format and Unit Conversion**
+Place your [¹⁸F]FDG DICOM folders inside the current directory. The script supports nested subfolders and processes only DICOM files. A summary will be saved to `infos.xlsx`.
 
 ```bash
 ./convert_format_unit.sh
 ```
 
-The second step is to automatically reorient the origin of nifti files using the center of mass, spatially normalize data using SPM Old Normalize function and the PET.nii provided in SPM8, and normalize in intensity based on average gray matter and pons (from Wake Forest University PickAtlas).
+**2. Spatial and Gray Matter/Pons Intensity Normalization**
+This step:
+- Reorients the origin of NIfTI files to the center of mass,
+- Applies SPM’s Old Normalize using the PET template (PET.nii from SPM8),
+- Performs intensity normalization using the average uptake in pons (from Wake Forest University PickAtlas) and gray matter.
 
 ```bash
 ./normalize_space_intensity.sh
+```
+
+**3. Iterative Intensity Normalization**
+This final step requires a control group. It identifies regions of abnormal metabolism by creating a custom individual reference region (gray matter minus F-map clusters), computing an average uptake within this region and dividing the spatially normalized image `w_realigned.nii` by this average.
+
+```bash
+./normalize_iterative_intensity.sh
 ```
