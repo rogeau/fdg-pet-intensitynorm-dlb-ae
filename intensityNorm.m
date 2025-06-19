@@ -2,11 +2,11 @@ function intensityNorm(input_dir)
     nii_files = dir(fullfile(input_dir, '**', 'w_realigned.nii'));
 
     % Load ref regions
-    wfu_path = 'masks/wfu.nii';
+    wfu_path = 'reference_regions/wfu.nii';
     wfu_header = spm_vol(wfu_path);
     wfu = spm_read_vols(wfu_header);
 
-    gm_path = 'masks/GM.nii';
+    gm_path = 'reference_regions/GM.nii';
     gm_header = spm_vol(gm_path);
     gm = spm_read_vols(gm_header);
 
