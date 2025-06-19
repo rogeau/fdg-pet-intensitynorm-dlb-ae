@@ -10,7 +10,7 @@ To run this pipeline, you’ll need the following:
 
 - **MATLAB**
 - **SPM12** (added to your MATLAB path)
-- **dcm2niix** – for DICOM to NIfTI conversion
+- **dcm2niix**, for DICOM to NIfTI conversion
 - **Python** (via Anaconda/Miniconda recommended)
 
 Python is required for the first step (DICOM to NIfTI and Unit conversions) and a dedicated conda environment can be created with the provided `environment.yml` file:
