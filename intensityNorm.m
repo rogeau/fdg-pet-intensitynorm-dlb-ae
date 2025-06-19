@@ -96,7 +96,7 @@ function intensityNorm(input_dir)
 	[filepath_gdparent, parent_folder] = fileparts(filepath_parent);
 	[~, gdparent_folder] = fileparts(filepath_gdparent);
 
-	full_title = sprintf('Spatial Norm QC for: %s/%s/%s%s', gdparent_folder, parent_folder, nii_files(i).name);
+	full_title = sprintf('Intensity Norm QC for: %s/%s/%s%s', gdparent_folder, parent_folder, nii_files(i).name);
 	sgtitle(full_title, 'Interpreter', 'none', 'FontWeight', 'bold', 'FontSize', 10);
 
         exportgraphics(fig, output_pdf, 'Append', true, 'ContentType', 'image');
