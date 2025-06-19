@@ -29,4 +29,4 @@ if [ ! -f "$infos" ]; then
     exit 1
 fi
 
-matlab -nosplash -nodisplay -r "center_mass('$input_path', '$output_path', '$infos'); spatialNorm('$output_path'); intensityNorm('$output_path'); smooth('$output_path'); exit"
+matlab -nosplash -nodisplay -r "center_mass('$input_path', '$output_path', '$infos'); spatial_norm('$output_path'); std_intensity_norm('$output_path'); std_smooth('$output_path'); exit"

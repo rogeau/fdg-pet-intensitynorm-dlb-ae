@@ -49,6 +49,6 @@ echo "Running Nifti transformation..."
 dcm2niix -z n -b y -f "%j" -o "$population_bqml" "$tmpdir"
 
 echo "Running SUV conversion..."
-python bqml_to_suv.py "$population_bqml" "$population_suv" "$source"
+python bqml2suv.py "$population_bqml" "$population_suv" "$source"
 
 echo "Processing complete."

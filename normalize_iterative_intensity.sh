@@ -33,4 +33,4 @@ if [ ! -d "$control_dir" ]; then
     exit 1
 fi
 
-matlab -nosplash -nodisplay -r "create_individual_masks('$patient_dir', '$control_dir'); iterativeIntensityNorm('$patient_dir'); iter_smooth('$patient_dir'); exit"
+matlab -nosplash -nodisplay -r "create_individual_masks('$patient_dir', '$control_dir'); iter_intensity_norm('$patient_dir'); iter_smooth('$patient_dir'); exit"

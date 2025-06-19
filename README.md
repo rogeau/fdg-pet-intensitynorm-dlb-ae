@@ -13,7 +13,7 @@ To run this pipeline, you’ll need the following:
 - **dcm2niix**, for DICOM to NIfTI conversion
 - **Python** (via Anaconda/Miniconda recommended)
 
-Python is required for the first step (DICOM to NIfTI and Unit conversions) and a dedicated conda environment can be created with the provided `environment.yml` file:
+Python is required for the first step (DICOM to NIfTI and unit conversions) and a dedicated conda environment can be created with the provided `environment.yml` file:
 
 ```bash
 conda env create -f environment.yml

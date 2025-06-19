@@ -1,4 +1,4 @@
-function spatialNorm(input_dir)
+function spatial_norm(input_dir)
     nii_files = dir(fullfile(input_dir, '**', '*.nii'));
 
     template = fullfile(pwd, 'template', 'PET.nii');

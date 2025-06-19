@@ -1,4 +1,4 @@
-function iterativeIntensityNorm(patient_dir)
+function iter_intensity_norm(patient_dir)
     nii_files = dir(fullfile(patient_dir, '**', 'w_realigned.nii'));
 
     output_pdf = fullfile(patient_dir, 'iterative_intensity_QC.pdf');

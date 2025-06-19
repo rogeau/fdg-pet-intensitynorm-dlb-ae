@@ -1,4 +1,4 @@
-function intensityNorm(input_dir)
+function std_intensity_norm(input_dir)
     nii_files = dir(fullfile(input_dir, '**', 'w_realigned.nii'));
 
     % Load ref regions

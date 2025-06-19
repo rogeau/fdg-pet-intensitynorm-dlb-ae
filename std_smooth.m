@@ -1,4 +1,4 @@
-function smooth(input_dir)
+function std_smooth(input_dir)
     nii_files = dir(fullfile(input_dir, '**', '*w_realigned.nii'));
 
     for i = 1:length(nii_files)
