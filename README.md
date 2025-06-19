@@ -24,6 +24,7 @@ conda activate pet-pipeline
 
 # 🛠️ Processing Pipeline
 **1. Format and Unit Conversion**
+
 Place your [¹⁸F]FDG DICOM folders inside the current directory. The script supports nested subfolders and processes only DICOM files. A summary will be saved to `infos.xlsx`.
 
 ```bash
@@ -31,6 +32,7 @@ Place your [¹⁸F]FDG DICOM folders inside the current directory. The script su
 ```
 
 **2. Spatial and Gray Matter/Pons Intensity Normalization**
+
 This step:
 - Reorients the origin of NIfTI files to the center of mass,
 - Applies SPM’s Old Normalize using the PET template (PET.nii from SPM8),
@@ -41,6 +43,7 @@ This step:
 ```
 
 **3. Iterative Intensity Normalization**
+
 This final step requires a control group. It identifies regions of abnormal metabolism by creating a custom individual reference region (gray matter minus F-map clusters), computing an average uptake within this region and dividing the spatially normalized image `w_realigned.nii` by this average.
 
 ```bash
