@@ -36,7 +36,7 @@ function create_individual_masks(patient_dir, control_dir)
         matlabbatch{1}.spm.stats.factorial_design.multi_cov = struct('files', {}, 'iCFI', {}, 'iCC', {});
         matlabbatch{1}.spm.stats.factorial_design.masking.tm.tm_none = 1;
         matlabbatch{1}.spm.stats.factorial_design.masking.im = 0;
-        matlabbatch{1}.spm.stats.factorial_design.masking.em = {'masks/GM.nii,1'};
+        matlabbatch{1}.spm.stats.factorial_design.masking.em = {'reference_regions/GM.nii,1'};
         matlabbatch{1}.spm.stats.factorial_design.globalc.g_mean = 1;
         matlabbatch{1}.spm.stats.factorial_design.globalm.gmsca.gmsca_no = 1;
         matlabbatch{1}.spm.stats.factorial_design.globalm.glonorm = 2;
