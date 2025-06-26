@@ -49,3 +49,13 @@ This final step requires a control group. It identifies regions of abnormal meta
 ```bash
 ./normalize_iterative_intensity.sh
 ```
+
+---
+
+# 🔍 Average ROI values
+
+This script allows you to extract average ROI values from the Wake Forest University (WFU) PickAtlas and plot them as histograms.
+
+```bash
+./extract_plot_rois.sh
+```

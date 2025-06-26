@@ -11,4 +11,8 @@ DLB/*
 HC/*
 AE/*
 
+roi_plots/*
+
+reference_regions/eroded*
+
 .DS_Store

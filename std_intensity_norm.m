@@ -2,7 +2,7 @@ function std_intensity_norm(input_dir)
     nii_files = dir(fullfile(input_dir, '**', 'w_realigned.nii'));
 
     % Load ref regions
-    wfu_path = 'reference_regions/wfu.nii';
+    wfu_path = 'reference_regions/TD_lobe.nii';
     wfu_header = spm_vol(wfu_path);
     wfu = spm_read_vols(wfu_header);
 
