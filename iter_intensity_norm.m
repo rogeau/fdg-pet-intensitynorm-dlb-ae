@@ -1,14 +1,19 @@
-function iter_intensity_norm(patient_dir)
+function iter_intensity_norm(patient_dir, threshold)
+    if nargin < 2
+        threshold = 0.01;
+    end
+    threshold = str2double(threshold);
+    threshold_str = strrep(num2str(threshold, '%.15g'), '.', '');
     nii_files = dir(fullfile(patient_dir, '**', 'w_realigned.nii'));
 
-    output_pdf = fullfile(patient_dir, 'iterative_intensity_QC.pdf');
+    output_pdf = fullfile(patient_dir, sprintf('iterative_%s_intensity_QC.pdf', threshold_str));
     if exist(output_pdf, 'file')
         delete(output_pdf);
     end
 
     for i = 1:length(nii_files)
         file_path = fullfile(nii_files(i).folder, nii_files(i).name);
-	mask_path = fullfile(nii_files(i).folder, 'individual_mask.nii');
+	mask_path = fullfile(nii_files(i).folder, sprintf('individual_mask_%s.nii', threshold_str));
 
         if ~exist(file_path, 'file')
             warning('File not found: %s. Skipping.', file_path);
@@ -32,7 +37,7 @@ function iter_intensity_norm(patient_dir)
             norm_gm = pet_vol / mask_mean;
             gm_hdr = pet_hdr;
             [~, name, ext] = fileparts(nii_files(i).name);
-            gm_hdr.fname = fullfile(nii_files(i).folder, ['iter_' name ext]);
+            gm_hdr.fname = fullfile(nii_files(i).folder, [sprintf('iter_%s_', threshold_str) name ext]);
             spm_write_vol(gm_hdr, norm_gm);
         end
 

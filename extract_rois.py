@@ -92,7 +92,7 @@ def main():
     results_label = extract_rois(subject_files=subject_files, atlas_path="reference_regions/TD_label.nii", labels_path="reference_regions/TD_label.txt")
     results_lobe = extract_rois(subject_files=subject_files, atlas_path="reference_regions/TD_lobe.nii", labels_path="reference_regions/TD_lobe.txt")
     results_GM = extract_rois_GM(subject_files=subject_files, mask_path="reference_regions/GM.nii")
-    results_GM_iter = extract_rois_GM(subject_files=subject_files, individual_masks=True, region_name="Gray_Matter_Iter")
+    results_GM_iter = extract_rois_GM(subject_files=subject_files, individual_masks=True, region_name="Gray_Matter_Iter_03")
 
     filename_stem = Path(args.filename).stem
     output_path = input_folder / f'roi_results_{filename_stem}.xlsx'

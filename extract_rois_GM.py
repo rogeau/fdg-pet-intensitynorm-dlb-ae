@@ -24,7 +24,7 @@ def extract_rois_GM(subject_files, mask_path=None, individual_masks=False, regio
         # Determine mask path
         if individual_masks:
             suffix = ''.join(subject_path.suffixes)  # preserves .nii.gz
-            mask = subject_path.with_name(f"individual_mask{suffix}")
+            mask = subject_path.with_name(f"individual_mask_03{suffix}")
         else:
             if mask_path is None:
                 raise ValueError("mask_path must be provided when individual_masks=False.")

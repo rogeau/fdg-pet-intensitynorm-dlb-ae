@@ -15,4 +15,6 @@ roi_plots/*
 
 reference_regions/eroded*
 
+results/*
+
 .DS_Store

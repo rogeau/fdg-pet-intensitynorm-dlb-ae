@@ -1,5 +1,11 @@
-function create_individual_masks(patient_dir, control_dir)
+function create_individual_masks(patient_dir, control_dir, threshold)
+    if nargin < 3
+        threshold = 0.01;
+    end
+    threshold = str2double(threshold);
+    threshold_str = strrep(num2str(threshold, '%.15g'), '.', '');
     spm('defaults', 'PET');
+    spm_get_defaults('cmdline', true);
     original_dir = pwd; 
     % Recursively find patient and control NIfTI files
     patient_paths = dir(fullfile(patient_dir, '**', 's_gm_w_realigned.nii'));
@@ -13,11 +19,12 @@ function create_individual_masks(patient_dir, control_dir)
     for d = 1:length(patient_paths)
         % Get current patient file
         PET_file = fullfile(patient_paths(d).folder, patient_paths(d).name);
+        fprintf('⚙️ Creating individual mask for file: %s\n', PET_file);
         PET_file = [PET_file ',1'];  % SPM volume index
 
         % Set target folder to the same as the patient's file location
         parent_folder = patient_paths(d).folder;
-        target_folder = fullfile(parent_folder, 'individual_mask_analysis');       
+        target_folder = fullfile(parent_folder, sprintf('individual_mask_analysis_%s', threshold_str));       
         if ~exist(target_folder, 'dir')
             mkdir(target_folder);
         end
@@ -64,7 +71,7 @@ function create_individual_masks(patient_dir, control_dir)
         matlabbatch{4}.spm.stats.results.conspec.titlestr = '';
         matlabbatch{4}.spm.stats.results.conspec.contrasts = 1;
         matlabbatch{4}.spm.stats.results.conspec.threshdesc = 'none';
-        matlabbatch{4}.spm.stats.results.conspec.thresh = 0.01;
+        matlabbatch{4}.spm.stats.results.conspec.thresh = threshold;
         matlabbatch{4}.spm.stats.results.conspec.extent = 0;
         matlabbatch{4}.spm.stats.results.conspec.conjunction = 1;
         matlabbatch{4}.spm.stats.results.conspec.mask.none = 1;
@@ -76,7 +83,7 @@ function create_individual_masks(patient_dir, control_dir)
         hypo_hyper_mask = fullfile(target_folder, 'spmF_0001_hypo_hyper_mask.nii');
 
         matlabbatch{5}.spm.util.imcalc.input = {original_mask; hypo_hyper_mask};
-        matlabbatch{5}.spm.util.imcalc.output = 'individual_mask';
+        matlabbatch{5}.spm.util.imcalc.output = sprintf('individual_mask_%s', threshold_str);
         matlabbatch{5}.spm.util.imcalc.outdir = {parent_folder};
         matlabbatch{5}.spm.util.imcalc.expression = 'i1 - i2';
         matlabbatch{5}.spm.util.imcalc.var = struct('name', {}, 'value', {});

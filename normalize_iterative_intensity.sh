@@ -33,4 +33,6 @@ if [ ! -d "$control_dir" ]; then
     exit 1
 fi
 
-matlab -nosplash -nodisplay -r "create_individual_masks('$patient_dir', '$control_dir'); iter_intensity_norm('$patient_dir'); iter_smooth('$patient_dir'); exit"
+read -p "Enter threshold for SPM F-contrast (individual mask): " threshold
+
+matlab -nosplash -nodisplay -r "create_individual_masks('$patient_dir', '$control_dir', '$threshold'); iter_intensity_norm('$patient_dir', '$threshold'); iter_smooth('$patient_dir', '$threshold'); exit"
