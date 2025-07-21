@@ -18,3 +18,5 @@ reference_regions/eroded*
 results/*
 
 .DS_Store
+
+._*
