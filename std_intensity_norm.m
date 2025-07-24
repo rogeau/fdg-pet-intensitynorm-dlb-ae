@@ -1,14 +1,18 @@
 function std_intensity_norm(input_dir)
     nii_files = dir(fullfile(input_dir, '**', 'w_realigned.nii'));
 
-    % Load ref regions
-    wfu_path = 'reference_regions/TD_lobe.nii';
-    wfu_header = spm_vol(wfu_path);
-    wfu = spm_read_vols(wfu_header);
-
+    pons_path = 'reference_regions/wfu_pons.nii';
+    if exist(pons_path, 'file') ~= 2
+        wfu_path = 'reference_regions/TD_lobe.nii';
+        wfu_header = spm_vol(wfu_path);
+        wfu = spm_read_vols(wfu_header);
+        pons = (wfu == 7);
+        pons_header = wfu_header;
+        pons_header.fname = pons_path;
+        pons_header.dt(1) = 2;
+        spm_write_vol(pons_header, pons);
+    end
     gm_path = 'reference_regions/GM.nii';
-    gm_header = spm_vol(gm_path);
-    gm = spm_read_vols(gm_header);
 
     output_pdf = fullfile(input_dir, 'intensity_QC.pdf');
     if exist(output_pdf, 'file')
@@ -28,7 +32,18 @@ function std_intensity_norm(input_dir)
         pet_hdr = spm_vol(file_path);
         pet_vol = spm_read_vols(pet_hdr);
 
-        pons_mask = (wfu == 7);
+        copied_pons_path = fullfile(nii_files(i).folder, 'wfu_pons.nii');
+        copyfile(pons_path, copied_pons_path);
+        copied_pons_hdr = spm_vol(copied_pons_path);
+        P = char(pet_hdr.fname, copied_pons_hdr.fname);
+        flags = struct('interp', 0, 'wrap', [0 0 0], 'mask', 0, 'which', 1, 'mean', 0);
+        spm_reslice(P, flags);
+        delete(copied_pons_path);
+
+        resliced_pons_path = fullfile(nii_files(i).folder, 'rwfu_pons.nii');
+        pons_header = spm_vol(resliced_pons_path);
+        pons = spm_read_vols(pons_header);
+        pons_mask = (pons == 1);
         pons_mean = mean(pet_vol(pons_mask), 'omitnan');
 
         if pons_mean == 0 || isnan(pons_mean)
@@ -41,6 +56,17 @@ function std_intensity_norm(input_dir)
             spm_write_vol(pons_hdr, norm_pons);
         end
 
+        copied_gm_path = fullfile(nii_files(i).folder, 'GM.nii');
+        copyfile(gm_path, copied_gm_path);
+        copied_gm_hdr = spm_vol(copied_gm_path);
+        P = char(pet_hdr.fname, copied_gm_hdr.fname);
+        flags = struct('interp', 0, 'wrap', [0 0 0], 'mask', 0, 'which', 1, 'mean', 0);
+        spm_reslice(P, flags);
+        delete(copied_gm_path);
+
+        resliced_gm_path = fullfile(nii_files(i).folder, 'rGM.nii');
+        gm_header = spm_vol(resliced_gm_path);
+        gm = spm_read_vols(gm_header);
         gm_mask = (gm == 1);
         gm_mean = mean(pet_vol(gm_mask), 'omitnan');
 
@@ -58,12 +84,12 @@ function std_intensity_norm(input_dir)
         mid_x = round(size(pet_vol, 1) / 2);  % Sagittal (X)
         mid_z = round(size(pet_vol, 3) / 2);  % Axial (Z)
 
-	orig_sag = flipud(squeeze(pet_vol(mid_x, :, :))');
-	pons_sag = flipud(squeeze(pons_mask(mid_x, :, :))');
+	    orig_sag = flipud(squeeze(pet_vol(mid_x, :, :))');
+	    pons_sag = flipud(squeeze(pons_mask(mid_x, :, :))');
         intersect_sag = orig_sag .* double(pons_sag);
 
-	orig_ax = flipud(squeeze(pet_vol(:, :, mid_z))');
-	gm_ax = flipud(squeeze(gm_mask(:, :, mid_z))');
+	    orig_ax = flipud(squeeze(pet_vol(:, :, mid_z))');
+	    gm_ax = flipud(squeeze(gm_mask(:, :, mid_z))');
         intersect_ax = orig_ax .* double(gm_ax);
 
         fig = figure('Name', 'Sagittal & Axial Visualization', 'NumberTitle', 'off');
@@ -92,7 +118,7 @@ function std_intensity_norm(input_dir)
         imagesc(intersect_ax); axis image off;
         title('Intersection');
 
-	[filepath_parent, file_name, ext] = fileparts(file_path);
+	[filepath_parent, ~, ~] = fileparts(file_path);
 	[filepath_gdparent, parent_folder] = fileparts(filepath_parent);
 	[~, gdparent_folder] = fileparts(filepath_gdparent);
 

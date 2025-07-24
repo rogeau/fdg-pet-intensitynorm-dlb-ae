@@ -20,7 +20,7 @@ if [[ "$extract_answer" =~ ^[Yy]$ ]]; then
             continue  # allow retry
         fi
 
-        echo "Enter the file name of volumes from which ROI values will be extracted (including the extension): "
+        echo "Enter the file name of volumes from which ROI values will be extracted (including the extension, e.g. s_gm_w_realigned.nii): "
         read filename
 
         if ! find "$input_path" -type f -name "$filename" -print -quit | grep -q .; then

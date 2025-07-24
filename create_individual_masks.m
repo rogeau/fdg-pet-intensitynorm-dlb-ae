@@ -24,7 +24,7 @@ function create_individual_masks(patient_dir, control_dir, threshold)
 
         % Set target folder to the same as the patient's file location
         parent_folder = patient_paths(d).folder;
-        target_folder = fullfile(parent_folder, sprintf('individual_mask_analysis_%s', threshold_str));       
+        target_folder = fullfile(parent_folder, sprintf('individual_mask_analysis%s', threshold_str));       
         if ~exist(target_folder, 'dir')
             mkdir(target_folder);
         end
@@ -83,7 +83,7 @@ function create_individual_masks(patient_dir, control_dir, threshold)
         hypo_hyper_mask = fullfile(target_folder, 'spmF_0001_hypo_hyper_mask.nii');
 
         matlabbatch{5}.spm.util.imcalc.input = {original_mask; hypo_hyper_mask};
-        matlabbatch{5}.spm.util.imcalc.output = sprintf('individual_mask_%s', threshold_str);
+        matlabbatch{5}.spm.util.imcalc.output = sprintf('individual_mask%s', threshold_str);
         matlabbatch{5}.spm.util.imcalc.outdir = {parent_folder};
         matlabbatch{5}.spm.util.imcalc.expression = 'i1 - i2';
         matlabbatch{5}.spm.util.imcalc.var = struct('name', {}, 'value', {});

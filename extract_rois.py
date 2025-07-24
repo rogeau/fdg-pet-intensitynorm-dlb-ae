@@ -84,6 +84,11 @@ def main():
 
     input_folder = Path(args.input_folder)
     subject_files = list(input_folder.glob(f'**/{args.filename}'))
+    individual_masks = {}
+    for subject_file in subject_files:
+        subject_dir = subject_file.parent
+        mask_files = list(subject_dir.glob('rindividual_mask*.nii'))
+        individual_masks[subject_file] = mask_files
 
     if not subject_files:
         print(f"No subject files found in {input_folder}")
@@ -91,8 +96,8 @@ def main():
 
     results_label = extract_rois(subject_files=subject_files, atlas_path="reference_regions/TD_label.nii", labels_path="reference_regions/TD_label.txt")
     results_lobe = extract_rois(subject_files=subject_files, atlas_path="reference_regions/TD_lobe.nii", labels_path="reference_regions/TD_lobe.txt")
-    results_GM = extract_rois_GM(subject_files=subject_files, mask_path="reference_regions/GM.nii")
-    results_GM_iter = extract_rois_GM(subject_files=subject_files, individual_masks=True, region_name="Gray_Matter_Iter_03")
+    results_GM = extract_rois_GM(subject_files=subject_files)
+    results_GM_iter = extract_rois_GM(subject_files=subject_files, individual_masks=individual_masks)
 
     filename_stem = Path(args.filename).stem
     output_path = input_folder / f'roi_results_{filename_stem}.xlsx'
