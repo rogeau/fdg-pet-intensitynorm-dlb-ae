@@ -4,7 +4,7 @@ function iter_smooth(patient_dir, threshold)
     end
     threshold = str2double(threshold);
     threshold_str = strrep(num2str(threshold, '%.15g'), '.', '');
-    nii_files = dir(fullfile(patient_dir, '**', sprintf('iter_%s_w_realigned.nii', threshold_str)));
+    nii_files = dir(fullfile(patient_dir, '**', sprintf('iter%s_w_realigned.nii', threshold_str)));
 
     for i = 1:length(nii_files)
         file_path = fullfile(nii_files(i).folder, nii_files(i).name);
