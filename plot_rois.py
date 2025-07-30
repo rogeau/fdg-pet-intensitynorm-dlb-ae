@@ -4,7 +4,7 @@ import pandas as pd
 
 def extract_region_values(excel_path, region):
     file = pd.ExcelFile(excel_path)
-    fallback_region = "Gray_Matter" if region.startswith("Gray_Matter_Iter") else None
+    fallback_region = "rGM" if region.startswith("rindividual_mask") else None
 
     # First try to find the exact region in any sheet
     for sheet_name in file.sheet_names:
