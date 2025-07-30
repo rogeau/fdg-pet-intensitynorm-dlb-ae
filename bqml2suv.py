@@ -102,6 +102,14 @@ def identification(ds, info_dict):
         "SeriesDescription": series_description
     })
 
+def compute_age(row):
+    try:
+        dob = pd.to_datetime(row['DateOfBirth'], format='%Y%m%d')
+        study_date = pd.to_datetime(row['StudyDate'], format='%Y%m%d')
+        age = (study_date - dob).days / 365.25
+        return round(age, 1)
+    except Exception:
+        return None
 
 def convert_bqml_to_suv(bqml_dir, suv_dir, dicom_dir):
     parent_folder = os.path.abspath(bqml_dir).split(os.sep)[-2]
@@ -162,6 +170,8 @@ def convert_bqml_to_suv(bqml_dir, suv_dir, dicom_dir):
     # Save the info as Excel
     if info_list:
         df = pd.DataFrame(info_list)
+        df['Sex_binary'] = df['Sex'].map({'M': 0, 'F': 1})
+        df['Age'] = df.apply(compute_age, axis=1)
         dfpath = os.path.join(parent_folder, "infos.xlsx")
         df.to_excel(dfpath, index=False)
         print(f"📄 Info saved to {dfpath}")
